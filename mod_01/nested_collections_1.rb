@@ -1,3 +1,5 @@
+require 'awesome_print'
+
 # STATE CAPITALS
 states = {
   'Oregon' => 'OR',
@@ -20,15 +22,26 @@ states['Alabama']
 capitals[states['Oregon']]
 
 # Level 3: Handle the case when a state’s information is not known by returning “Unknown”
-# states.fetch(:key, 'Unknown')
-# p states['Massachusetts']
+# states.fetch('Massachusetts', 'Unknown')
+states.default = 'Unknown'
+states[:massachusetts]
+states[:alaska]
 
 # Level 4: Let’s go the other way. Given a capital name (“Denver”), return the state name for which it is the capital (“Colorado”)
-# Level 5: Write some code to turn these two hashes into one nested hash which looks like this:
+states.key(capitals.key('Denver'))
 
+# Level 5: Write some code to turn these two hashes into one nested hash which looks like this:
 # state_info = {
 #   'Oregon' => { abbreviation: 'OR', capital: 'Salem' },
 #   'Alabama' => { abbreviation: 'AL', capital: 'Montgomery' },
 #   'New Jersey' => { abbreviation: 'NJ', capital: 'Trenton' },
 #   'Colorado' => { abbreviation: 'CO', capital: 'Denver' }
 # }
+
+state_info = {}
+
+states.each_key do |key|
+  state_info[key] = {}
+  state_info[key][:abbreviation] = states[key]
+  state_info[key][:capital] = capitals[states[key]]
+end
