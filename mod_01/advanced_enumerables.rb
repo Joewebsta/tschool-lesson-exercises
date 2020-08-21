@@ -1,3 +1,5 @@
+require 'awesome_print'
+
 # WARMUP
 
 # class Student
@@ -65,39 +67,43 @@ modules = {
   mod_4: [student5]
 }
 
-# Figure out which mod has the most students. The answer should be :mod_1 .
-more_than_1_student = modules.select { |_mod, students| students.count > 1 }
-more_than_1_student.keys
-
-# Create a hash that associates a mod with an Array of students names
-
-new_modules = {}
-modules.each do |key, value|
-  student_names = value.map(&:name)
-  new_modules[key] = student_names
-end
-new_modules
-
-# Figure out which mod has the most students. The answer should be :mod_1 .
-most_students = []
-modules.each do |_mod, student_arr|
-  most_students = student_arr if student_arr.count > most_students.count
+# Create an array of all mods (as symbols) that have more than one student. The answer should be [:mod_1] .
+more_than_1_student = modules.each_with_object([]) do |key_val, mod_arr|
+  mod = key_val[0]
+  student_arr = key_val[1]
+  mod_arr << mod if student_arr.count > 1
 end
 
-modules.key(most_students)
+# Create a hash that associates a mod with an Array of students names. The answer should be:
+# {
+#   mod_1: ["Megan", "Brian", "Sal"],
+#   mod_2: [],
+#   mod_3: ["Mike"],
+#   mod_4: ["Amy"]
+# }
+student_names_hash = modules.each_with_object({}) do |key_val, names_hash|
+  mod = key_val[0]
+  names_arr = key_val[1]
+  names_hash[mod] = names_arr.map(&:name)
+end
+
+# Figure out which mod has the most students. The answer should be :mod_1 .
+most_students = modules.max_by { |_key, val| val.count }[0]
 
 # Create a Hash that associates a mod with the student with the name of the Student highest id.
-modules_by_highest_student_id = {}
-modules.each do |key, val|
-  if val.empty?
-    modules_by_highest_student_id[key] = nil
-    next
-  end
+# The answer should be:
+# {
+#   mod_1: "Brian",
+#   mod_2: nil,
+#   mod_3: "Mike",
+#   mod_4: "Amy"
+# }
 
-  highest_id = val.max_by(&:id)
-  modules_by_highest_student_id[key] = highest_id.name
+modules_by_highest_student_id = modules.each_with_object({}) do |key_val, hash|
+  mod = key_val[0]
+  students_arr = key_val[1]
+  hash[mod] = students_arr.empty? ? nil : students_arr.max_by(&:id).name
 end
-modules_by_highest_student_id
 
 # Create the following hash:
 # {
@@ -105,8 +111,8 @@ modules_by_highest_student_id
 #   ids_less_than_5:                  "Megan and Sal and Mike"
 # }
 
-final_hash = {}
-id_over_5 = modules.values.flatten.select { |student| student.id >= 5 }.map(&:name).join(' and ')
-id_below_5 = modules.values.flatten.select { |student| student.id < 5 }.map(&:name).join(' and ')
-final_hash[:ids_greater_than_or_equal_to_5] = id_over_5
-final_hash[:ids_less_than_5] = id_below_5
+custom_hash = modules.each_with_object({}) do |key_val, hash|
+  student_arr = key_val[1]
+  hash[:ids_greater_than_or_equal_to_5] = modules.values.flatten.select { |student| student.id >= 5 }.map(&:name).join(' and ')
+  hash[:ids_less_than_5] = modules.values.flatten.select { |student| student.id < 5 }.map(&:name).join(' and ')
+end
