@@ -38,10 +38,9 @@ states.key(capitals.key('Denver'))
 #   'Colorado' => { abbreviation: 'CO', capital: 'Denver' }
 # }
 
-state_info = {}
-
-states.each_key do |key|
-  state_info[key] = {}
-  state_info[key][:abbreviation] = states[key]
-  state_info[key][:capital] = capitals[states[key]]
+state_info = states.each_with_object({}) do |key_val, state_info_hash|
+  key = key_val[0]
+  state_info_hash[key] = {}
+  state_info_hash[key][:abbreviation] = states[key]
+  state_info_hash[key][:capital] = capitals[states[key]]
 end
