@@ -34,11 +34,10 @@ class CourseTest < Minitest::Test
   end
 
   def test_it_gets_student_houses
-    skip
     @course.add_student(@student1)
     @course.add_student(@student2)
     @course.add_student(@student3)
 
-    assert_equal [:slytherin, :gryffindor], @course.houses_represented
+    assert_equal %i[slytherin gryffindor], @course.houses_represented
   end
 end
