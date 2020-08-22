@@ -26,7 +26,7 @@ class SchoolTest < Minitest::Test
     @course3.add_student(@student5)
     @course3.add_student(@student6)
     @course3.add_student(@student7)
-    @school = School.new('Hogwarts', [:gryffindor, :slytherin, :ravenclaw, :hufflepuff])
+    @school = School.new('Hogwarts', %i[gryffindor slytherin ravenclaw hufflepuff])
   end
 
   def test_it_exists
@@ -35,7 +35,7 @@ class SchoolTest < Minitest::Test
 
   def test_it_has_attributes
     assert_equal 'Hogwarts', @school.name
-    assert_equal [:gryffindor, :slytherin, :ravenclaw, :hufflepuff], @school.houses
+    assert_equal %i[gryffindor slytherin ravenclaw hufflepuff], @school.houses
     assert_equal [], @school.courses
   end
 
@@ -54,11 +54,10 @@ class SchoolTest < Minitest::Test
   end
 
   def test_it_can_sort_all_students
-    skip
     @school.add_course(@course1)
     @school.add_course(@course2)
     @school.add_course(@course3)
-    
+
     @school.sort_students
 
     students = [
@@ -77,26 +76,24 @@ class SchoolTest < Minitest::Test
   end
 
   def test_it_can_list_all_students_by_name
-    skip
     @school.add_course(@course1)
     @school.add_course(@course2)
     @school.add_course(@course3)
-    
-    expected = [
-      'Malfoy',
-      'Ron',
-      'Harry',
-      'Hermione',
-      'Luna',
-      'Penelope',
-      'Ernie',
+
+    expected = %w[
+      Malfoy
+      Ron
+      Harry
+      Hermione
+      Luna
+      Penelope
+      Ernie
     ]
 
     assert_equal expected, @school.student_names
   end
 
   def test_it_can_list_all_students_by_house
-    skip
     @school.add_course(@course1)
     @school.add_course(@course2)
     @school.add_course(@course3)
@@ -112,7 +109,7 @@ class SchoolTest < Minitest::Test
       slytherin: [@student1],
       gryffindor: [@student2, @student3, @student4],
       ravenclaw: [@student5, @student6],
-      hufflepuff: [@student7],
+      hufflepuff: [@student7]
     }
 
     assert_equal expected, @school.students_by_house
