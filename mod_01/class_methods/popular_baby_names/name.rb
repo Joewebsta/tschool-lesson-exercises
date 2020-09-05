@@ -18,6 +18,12 @@ class Name
     rows = CSV.foreach(@@filename, headers: true, header_converters: :symbol)
     rows.map { |row| Name.new(row) }.select { |row| row.name.downcase == name.downcase }
   end
+
+  def self.find_by_year(year)
+    rows = CSV.foreach(@@filename, headers: true, header_converters: :symbol)
+    rows.map { |row| Name.new(row) }.select { |row| row.year == year }
+  end
 end
 
-pp Name.find_by_name('Ian')
+# pp Name.find_by_name('Ian')
+# pp Name.find_by_year('2014')
