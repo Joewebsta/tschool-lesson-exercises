@@ -6,25 +6,18 @@ class Name
   @@filename = 'Popular_Baby_Names.csv'
 
   def initialize(data)
-    @year = 
-    @bio_gender = 
-    @ethnicity = 
-    @name = 
-    @count = 
-    @rank = 
+    @year = data[:year_of_birth]
+    @bio_gender = data[:gender]
+    @ethnicity = data[:ethnicity]
+    @name = data[:childs_first_name]
+    @count = data[:count].to_i
+    @rank = data[:rank].to_i
   end
 
   def self.find_by_name(name)
-    rows = CSV.read(@@filename, headers: true)
-    result = []
-    
-    # new code goes here
-    
-    result
+    rows = CSV.foreach(@@filename, headers: true, header_converters: :symbol)
+    rows.map { |row| Name.new(row) }.select { |row| row.name.downcase == name.downcase }
   end
 end
 
-
-@@filename = 'Popular_Baby_Names.csv'
-rows = CSV.read(@@filename, headers: true)
-pp rows
+pp Name.find_by_name('Ian')
