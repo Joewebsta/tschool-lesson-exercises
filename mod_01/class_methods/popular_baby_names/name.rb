@@ -23,7 +23,15 @@ class Name
     rows = CSV.foreach(@@filename, headers: true, header_converters: :symbol)
     rows.map { |row| Name.new(row) }.select { |row| row.year == year }
   end
+
+  def self.where(data)
+    rows = CSV.foreach(@@filename, headers: true, header_converters: :symbol)
+    rows.select { |row| row[data.keys[0]] == data.values[0] }.map { |row| Name.new(row) }
+  end
 end
 
 # pp Name.find_by_name('Ian')
 # pp Name.find_by_year('2014')
+# pp Name.where({ rank: '15' }).count
+# pp Name.where({ gender: 'FEMALE' }).count
+# pp Name.where({ ethnicity: 'BLACK NON HISPANIC' }).count
